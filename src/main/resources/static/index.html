@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Demo</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width" />
+    <base href="/" />
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        try {
+          let response = await fetch("/user");
+          if (!response.ok) throw new Error("User fetch failed");
+          let data = await response.json();
+
+          document.getElementById("user").textContent = data.name;
+          document
+            .querySelectorAll(".unauthenticated")
+            .forEach((el) => (el.style.display = "none"));
+          document
+            .querySelectorAll(".authenticated")
+            .forEach((el) => (el.style.display = "block"));
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    </script>
+    <script>
+      async function logout() {
+        const csrfToken = getCsrfToken(); // Function to retrieve CSRF token
+
+        const response = await fetch("/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRF-TOKEN": csrfToken, // Send CSRF token
+          },
+        });
+
+        if (response.ok) {
+          window.location.href = "/"; // Redirect to home after logout
+        }
+      }
+
+      // Function to retrieve CSRF token from cookies or meta tag
+      function getCsrfToken() {
+        return document
+          .querySelector("meta[name='_csrf']")
+          .getAttribute("content"); // Example if CSRF token is in a meta tag
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container unauthenticated">
+      With Google: <a href="/oauth2/authorization/google">click here</a>
+    </div>
+    <div class="container authenticated">
+      Logged in as: <span id="user"></span>
+      <div>
+        <button onClick="logout()" class="btn btn-primary">Logout</button>
+      </div>
+    </div>
+  </body>
+</html>
