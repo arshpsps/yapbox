@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta name="_csrf" content="${_csrf.token}" />
+    <meta name="_csrf_header" content="${_csrf.headerName}" />
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Demo</title>
@@ -28,26 +30,41 @@
     </script>
     <script>
       async function logout() {
-        const csrfToken = getCsrfToken(); // Function to retrieve CSRF token
+        let csrfToken = await getCsrfToken();
+
+        if (!csrfToken) {
+          console.error("CSRF token not found!");
+          return;
+        }
 
         const response = await fetch("/logout", {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            "X-CSRF-TOKEN": csrfToken, // Send CSRF token
+            "X-XSRF-TOKEN": csrfToken, // ✅ Send CSRF token
           },
+          credentials: "same-origin", // ✅ Ensure cookies are sent
         });
 
         if (response.ok) {
-          window.location.href = "/"; // Redirect to home after logout
+          window.location.href = "/"; // ✅ Redirect to home
+        } else {
+          console.error("Logout failed with status:", response.status);
         }
       }
 
-      // Function to retrieve CSRF token from cookies or meta tag
-      function getCsrfToken() {
-        return document
-          .querySelector("meta[name='_csrf']")
-          .getAttribute("content"); // Example if CSRF token is in a meta tag
+      async function getCsrfToken() {
+        try {
+          let response = await fetch("/csrf-token", {
+            credentials: "same-origin",
+          });
+          if (!response.ok) throw new Error("Failed to fetch CSRF token");
+          let data = await response.json();
+          return data.token;
+        } catch (error) {
+          console.error("CSRF token not found:", error);
+          return null;
+        }
       }
     </script>
   </head>
