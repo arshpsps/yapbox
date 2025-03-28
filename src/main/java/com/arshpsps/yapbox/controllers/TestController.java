@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     @GetMapping("/user")
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
-        return Collections.singletonMap("name", principal.getAttribute("name"));
+        return principal.getAttributes();
+        // return Collections.singletonMap("name", principal.getAttribute("name"));
     }
 }

@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID", "XSRF-TOKEN"));
+        System.out.println("------------------------HOLY-------------------------------------");
         return http.build();
     }
 }
