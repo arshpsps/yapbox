@@ -16,10 +16,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, DataSource dataSource) throws Exception {
         http
                 .authorizeHttpRequests(a -> a
-                        .requestMatchers("/", "/index.html", "/error", "/webjars/**").permitAll()
+                        .requestMatchers("/", "/index.html", "/error.html", "/webjars/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(e -> e
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                        .authenticationEntryPoint((req, res, authException) -> {res.sendRedirect("/");}))
                 .oauth2Login(o -> o.defaultSuccessUrl("/", true))
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))

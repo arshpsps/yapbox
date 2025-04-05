@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Service
 public class AuthUserService {
-    private AuthUserRepository authUserRepository;
+    private final AuthUserRepository authUserRepository;
 
     public AuthUser getUser(String id) {
         return this.authUserRepository.findById(id).orElseThrow(() -> new RuntimeException("User doesn't exist"));

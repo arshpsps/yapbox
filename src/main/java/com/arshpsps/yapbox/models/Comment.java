@@ -1,6 +1,6 @@
 package com.arshpsps.yapbox.models;
 
-import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,11 +26,8 @@ public class Comment {
     private String message;
 
     @Column(nullable = false)
-    Timestamp creationDate;
+    ZonedDateTime creationDate;
 
     @ManyToOne
-    private AuthUser authUser;
-
-    @ManyToOne
-    private Page page;
+    private AuthUser author;
 }
