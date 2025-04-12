@@ -17,12 +17,14 @@ import java.time.ZonedDateTime;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final AuthUserRepository authUserRepository;
+    private final PageService pageService;
 
-    public void save(CommentDto comment, String authorId){
+    public void save(CommentDto comment, String authorId, Long pageId) {
         Comment c = new Comment();
         c.setAuthor(authUserRepository.findById(authorId).orElseThrow(() -> new RuntimeException("User not found")));
         c.setCreationDate(ZonedDateTime.now(ZoneId.of("UTC")));
         c.setMessage(comment.getMessage());
+        c.setPage(pageService.getPage(pageId));
         this.commentRepository.save(c);
     }
 }

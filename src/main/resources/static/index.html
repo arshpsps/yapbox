@@ -28,45 +28,6 @@
         }
       });
     </script>
-    <script>
-      async function logout() {
-        let csrfToken = await getCsrfToken();
-
-        if (!csrfToken) {
-          console.error("CSRF token not found!");
-          return;
-        }
-
-        const response = await fetch("/logout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "X-XSRF-TOKEN": csrfToken, // ✅ Send CSRF token
-          },
-          credentials: "same-origin", // ✅ Ensure cookies are sent
-        });
-
-        if (response.ok) {
-          window.location.href = "/"; // ✅ Redirect to home
-        } else {
-          console.error("Logout failed with status:", response.status);
-        }
-      }
-
-      async function getCsrfToken() {
-        try {
-          let response = await fetch("/csrf-token", {
-            credentials: "same-origin",
-          });
-          if (!response.ok) throw new Error("Failed to fetch CSRF token");
-          let data = await response.json();
-          return data.token;
-        } catch (error) {
-          console.error("CSRF token not found:", error);
-          return null;
-        }
-      }
-    </script>
   </head>
   <body>
     <div class="container unauthenticated">
@@ -75,7 +36,7 @@
     <div class="container authenticated">
       Logged in as: <span id="user"></span>
       <div>
-        <button onClick="logout()" class="btn btn-primary">Logout</button>
+        <a href="/logout" class="btn btn-primary">Logout</a>
       </div>
     </div>
   </body>

@@ -10,9 +10,9 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 public class SecurityEndpoints {
-    @GetMapping("/csrf-token")
-    public Map<String, String> getCsrfToken(HttpServletRequest request, CsrfToken csrfToken) {
-        return Map.of(
-                "token", csrfToken.getToken());
-    }
+//    @GetMapping("/csrf-token")
+//    public Map<String, String> getCsrfToken(HttpServletRequest request, CsrfToken csrfToken) {
+//        return Map.of(
+//                "token", csrfToken.getToken());
+//    }
 }

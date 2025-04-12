@@ -16,13 +16,15 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @RequiredArgsConstructor
-@RestController("pages")
+@RestController
 public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("{id}/savecomment")
     public ResponseEntity<?> saveComment(@PathVariable("id") Long id, @RequestBody CommentDto comment, OAuth2AuthenticationToken oauthToken) {
-        commentService.save(comment, oauthToken.getPrincipal().getAttribute("sub"));
+        System.out.println("----------------FSAFSAF-----------");
+        System.out.println((String) oauthToken.getPrincipal().getAttribute("sub"));
+        commentService.save(comment, oauthToken.getPrincipal().getAttribute("sub"), id);
         return ResponseEntity.ok().build();
     }
 }
