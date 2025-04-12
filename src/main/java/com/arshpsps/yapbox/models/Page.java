@@ -25,6 +25,6 @@ public class Page {
 
     private String url;
 
-    @OneToMany
+    @OneToMany(mappedBy = "comment")
     private List<Comment> comment;
 }

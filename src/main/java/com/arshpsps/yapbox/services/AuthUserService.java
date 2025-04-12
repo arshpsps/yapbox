@@ -30,11 +30,16 @@ public class AuthUserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User user = super.loadUser(userRequest);
         Map<String, Object> attributes = user.getAttributes();
+        attributes.forEach((key, value) -> {
+            System.out.println(key + ": " + value);
+        });
 
         String sub = (String) attributes.get("sub"); // Unique Google ID
         String email = (String) attributes.get("email");
         String name = (String) attributes.get("name");
         String picture = (String) attributes.get("picture");
+        String family_name = (String) attributes.get("family_name");
+        String given_name = (String) attributes.get("given_name");
 
         AuthUser authUser = authUserRepository.findById(sub)
                 .orElseGet(() -> {
@@ -46,6 +51,8 @@ public class AuthUserService extends DefaultOAuth2UserService {
         authUser.setEmail(email);
         authUser.setName(name);
         authUser.setPictureUrl(picture);
+        authUser.setFamilyName(family_name);
+        authUser.setGivenName(given_name);
 
         authUserRepository.save(authUser);
 

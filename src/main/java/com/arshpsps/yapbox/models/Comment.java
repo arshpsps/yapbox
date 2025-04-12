@@ -30,7 +30,4 @@ public class Comment {
 
     @ManyToOne
     private AuthUser author;
-
-    @ManyToOne
-    private Page page;
 }

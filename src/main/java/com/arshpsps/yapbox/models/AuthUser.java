@@ -26,7 +26,6 @@ public class AuthUser {
     private String name;
 
     private String pictureUrl;
-    private String locale;
     private String givenName;
     private String familyName;
 }
