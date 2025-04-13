@@ -25,6 +25,6 @@ public class Page {
 
     private String url;
 
-    @OneToMany(mappedBy = "comment")
-    private List<Comment> comment;
+    @OneToMany(mappedBy = "id")
+    private List<Comment> comment; //FIXME: potentially expensive?
 }
