@@ -1,17 +1,12 @@
 package com.arshpsps.yapbox.models;
 
-import java.time.ZonedDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "comments")
@@ -30,4 +25,9 @@ public class Comment {
 
     @ManyToOne
     private AuthUser author;
+
+    @ManyToOne
+    @JoinColumn(name = "page_id", nullable = false)
+    @JsonIgnore
+    private Page page;
 }
