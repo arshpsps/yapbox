@@ -1,5 +1,6 @@
 package com.arshpsps.yapbox.models;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class AuthUser {
     @Id
+    @JsonValue
     @Column(nullable = false, unique = true)
     private String googleId;
 

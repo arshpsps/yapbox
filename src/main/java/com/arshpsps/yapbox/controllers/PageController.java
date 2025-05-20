@@ -1,8 +1,12 @@
 package com.arshpsps.yapbox.controllers;
 
+import com.arshpsps.yapbox.dto.CommentDto;
 import com.arshpsps.yapbox.models.Comment;
+import com.arshpsps.yapbox.repository.CommentRepository;
+import com.arshpsps.yapbox.services.CommentService;
 import com.arshpsps.yapbox.services.PageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +26,7 @@ public class PageController {
     }
 
     @GetMapping("create")
+    @PreAuthorize("isAuthenticated()")
     public Long createPage() {
         return pageService.createPage();
     }

@@ -18,7 +18,9 @@ public class Page {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String url;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "owner_id")
+    private AuthUser owner;
 
     @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comment; //FIXME: potentially expensive?
