@@ -1,19 +1,15 @@
 package com.arshpsps.yapbox.services;
 
-import com.arshpsps.yapbox.dto.CommentDto;
-import com.arshpsps.yapbox.models.AuthUser;
-import com.arshpsps.yapbox.models.Comment;
-import com.arshpsps.yapbox.models.Page;
-import com.arshpsps.yapbox.repository.AuthUserRepository;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import org.springframework.stereotype.Service;
 
+import com.arshpsps.yapbox.dto.CommentDto;
+import com.arshpsps.yapbox.models.Comment;
 import com.arshpsps.yapbox.repository.CommentRepository;
 
 import lombok.AllArgsConstructor;
-
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 @AllArgsConstructor
 @Service
@@ -30,5 +26,15 @@ public class CommentService {
         c.setMessage(comment.getMessage());
 
         this.commentRepository.save(c);
+    }
+
+    public Comment update(Long id, CommentDto comment) {
+        Comment foundComment = get(id);
+        foundComment.setMessage(comment.getMessage());
+        return commentRepository.save(foundComment);
+    }
+
+    public Comment get(Long id) {
+        return commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found!"));
     }
 }

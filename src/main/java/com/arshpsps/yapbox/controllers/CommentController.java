@@ -1,6 +1,7 @@
 package com.arshpsps.yapbox.controllers;
 
 import com.arshpsps.yapbox.dto.CommentDto;
+import com.arshpsps.yapbox.models.Comment;
 import com.arshpsps.yapbox.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +17,23 @@ public class CommentController {
 
     @PostMapping("{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> saveComment(@PathVariable("id") Long id, @RequestBody CommentDto comment, OAuth2AuthenticationToken oauthToken) {
+    public ResponseEntity<?> saveComment(@PathVariable("id") Long id, @RequestBody CommentDto comment,
+            OAuth2AuthenticationToken oauthToken) {
         commentService.save(comment, oauthToken.getPrincipal().getAttribute("sub"), id);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("{id}/{cid}")
+    @PutMapping("/comment/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> updateComment(@PathVariable("id") Long id, @PathVariable("cid") Long cid, @RequestBody CommentDto comment, OAuth2AuthenticationToken oauthToken) {
+    public ResponseEntity<?> updateComment(@PathVariable("id") Long id, @RequestBody CommentDto comment,
+            OAuth2AuthenticationToken oauthToken) {
 
-        return ResponseEntity.ok().build();
+        if (commentService.get(id).getAuthor().getGoogleId().equals(oauthToken.getPrincipal().getAttribute("sub"))) {
+            commentService.update(id, comment);
+            System.out.println("GOOOOODYES");
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 }
